@@ -74,7 +74,7 @@ function stopp() {
   snake.final = snake.score;
   start.querySelector("span").innerHTML = snake.final + "  ";
   setTimeout(function () {
-    start.querySelector("span").innerHTML = " Играть ";
+    start.querySelector("span").innerHTML = " Play ";
   }, 1500);
   snake.init();
   modul.classList.remove("hidden");
