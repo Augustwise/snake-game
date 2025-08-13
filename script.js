@@ -1,5 +1,3 @@
-
-
 var snakeTable = document.querySelector(".snakeTable");
 var boxes = document.getElementsByClassName("box");
 var modul = document.querySelector(".modul");
@@ -7,7 +5,7 @@ var start = document.querySelector(".start");
 
 var table = {
   rowsCols: 21,
-  boxes: 21 * 21
+  boxes: 21 * 21,
 };
 
 var snake = {
@@ -17,9 +15,9 @@ var snake = {
     [7, 10],
     [8, 10],
     [9, 10],
-    [10, 10]
+    [10, 10],
   ],
-  interval: 200,
+  interval: 120,
   food: 0,
   score: 0,
   final: 0,
@@ -32,7 +30,7 @@ var snake = {
       [7, 10],
       [8, 10],
       [9, 10],
-      [10, 10]
+      [10, 10],
     ];
     snake.interval = 120;
     snake.food = 0;
@@ -41,9 +39,8 @@ var snake = {
     snake.canTurn = 0;
     snakeTable.innerHTML = "";
     tableCreation();
-  }
+  },
 };
-
 
 snake.init();
 
@@ -54,7 +51,6 @@ document.addEventListener("keydown", function (e) {
     startSnake();
   }
 });
-
 
 function startSnake() {
   modul.classList.add("hidden");
@@ -68,7 +64,6 @@ function startSnake() {
   }, snake.interval);
 }
 
-
 function stopp() {
   clearInterval(setInt);
   snake.final = snake.score;
@@ -79,7 +74,6 @@ function stopp() {
   snake.init();
   modul.classList.remove("hidden");
 }
-
 
 function move() {
   hitFood();
@@ -93,7 +87,6 @@ function move() {
 }
 
 function updatePositions() {
-
   boxes[
     snake.position[0][0] + snake.position[0][1] * table.rowsCols
   ].classList.remove("snake");
@@ -129,22 +122,18 @@ function hitBorder() {
       snake.direction === "down") ||
     (snake.position[headPos][1] === 0 && snake.direction === "up")
   ) {
-
     stopp();
   }
 }
-
 
 function hitSnake() {
   var headPos = snake.position.length - 1;
   for (var i = 0; i < headPos; i++) {
     if (snake.position[headPos].toString() === snake.position[i].toString()) {
-
       stopp();
     }
   }
 }
-
 
 function hitFood() {
   var head = snake.position[snake.position.length - 1];
@@ -165,7 +154,6 @@ function hitFood() {
   }
 }
 
-
 function randomFood() {
   var randomX = Math.floor(Math.random() * table.rowsCols);
   var randomY = Math.floor(Math.random() * table.rowsCols);
@@ -180,7 +168,6 @@ function randomFood() {
   foodPos = [randomX, randomY];
 }
 
-
 function renderSnake() {
   for (var i = 0; i < snake.position.length; i++) {
     boxes[
@@ -189,26 +176,24 @@ function renderSnake() {
   }
 }
 
-
 function turn(e) {
   if (snake.canTurn) {
     switch (e.keyCode) {
       case 13:
-
         break;
-      case 37: 
+      case 37:
         if (snake.direction === "right") return;
         snake.direction = "left";
         break;
-      case 38: 
+      case 38:
         if (snake.direction === "down") return;
         snake.direction = "up";
         break;
-      case 39: 
+      case 39:
         if (snake.direction === "left") return;
         snake.direction = "right";
         break;
-      case 40: 
+      case 40:
         if (snake.direction === "up") return;
         snake.direction = "down";
         break;
@@ -219,16 +204,14 @@ function turn(e) {
   }
 }
 
-
 function tableCreation() {
   if (snakeTable.innerHTML === "") {
-    
     for (var i = 0; i < table.boxes; i++) {
       var divElt = document.createElement("div");
       divElt.classList.add("box");
       snakeTable.appendChild(divElt);
     }
-    
+
     var statusElt = document.createElement("div");
     statusElt.classList.add("status");
     snakeTable.appendChild(statusElt);
@@ -238,7 +221,6 @@ function tableCreation() {
     statusElt.appendChild(scoreElt);
   }
 }
-
 
 $("document").ready(function () {
   $("body")
@@ -263,27 +245,24 @@ $("document").ready(function () {
 
 (function ($) {
   $.fn.swipeDetector = function (options) {
-    
     var swipeState = 0;
 
     var startX = 0;
     var startY = 0;
-    
+
     var pixelOffsetX = 0;
     var pixelOffsetY = 0;
-    
+
     var swipeTarget = this;
     var defaultSettings = {
-      
       swipeThreshold: 30,
-      
-      useOnlyTouch: true
+
+      useOnlyTouch: true,
     };
 
-  
     (function init() {
       options = $.extend(defaultSettings, options);
-      
+
       swipeTarget.on("mousedown touchstart", swipeStart);
       $("html").on("mouseup touchend", swipeEnd);
       $("html").on("mousemove touchmove", swiping);
@@ -309,14 +288,12 @@ $("document").ready(function () {
           Math.abs(pixelOffsetX) > Math.abs(pixelOffsetY) &&
           Math.abs(pixelOffsetX) > options.swipeThreshold
         ) {
-        
           if (pixelOffsetX < 0) {
             swipeTarget.trigger($.Event("swipeLeft.sd"));
           } else {
             swipeTarget.trigger($.Event("swipeRight.sd"));
           }
         } else if (Math.abs(pixelOffsetY) > options.swipeThreshold) {
-          
           if (pixelOffsetY < 0) {
             swipeTarget.trigger($.Event("swipeUp.sd"));
           } else {
@@ -327,7 +304,6 @@ $("document").ready(function () {
     }
 
     function swiping(event) {
-    
       if (swipeState !== 1) return;
 
       if (event.originalEvent.touches) {
@@ -347,22 +323,21 @@ $("document").ready(function () {
       }
     }
 
-    return swipeTarget; 
+    return swipeTarget;
   };
 })(jQuery);
-
 
 function preventDefault(e) {
   e.preventDefault();
 }
 function disableScroll() {
   document.body.addEventListener("touchmove", preventDefault, {
-    passive: false
+    passive: false,
   });
 }
 function enableScroll() {
   document.body.removeEventListener("touchmove", preventDefault, {
-    passive: false
+    passive: false,
   });
 }
 disableScroll();
