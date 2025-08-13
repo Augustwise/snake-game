@@ -1,7 +1,8 @@
-var snakeTable = document.querySelector(".snakeTable");
-var boxes = document.getElementsByClassName("box");
-var modul = document.querySelector(".modul");
-var start = document.querySelector(".start");
+var snakeTable = document.querySelector(".game__grid");
+var boxes = document.getElementsByClassName("game__cell");
+var modul = document.querySelector(".modal");
+var start = document.querySelector(".modal__start");
+var gameStartTime = 0;
 
 var table = {
   rowsCols: 21,
@@ -59,6 +60,7 @@ function startSnake() {
   renderSnake();
   randomFood();
 
+  gameStartTime = Date.now();
   setInt = setInterval(function () {
     move();
   }, snake.interval);
@@ -67,6 +69,8 @@ function startSnake() {
 function stopp() {
   clearInterval(setInt);
   snake.final = snake.score;
+  var durationMs = Date.now() - gameStartTime;
+  saveGameHistory(durationMs, snake.final);
   start.querySelector("span").innerHTML = snake.final + "  ";
   setTimeout(function () {
     start.querySelector("span").innerHTML = " Play ";
@@ -89,7 +93,7 @@ function move() {
 function updatePositions() {
   boxes[
     snake.position[0][0] + snake.position[0][1] * table.rowsCols
-  ].classList.remove("snake");
+  ].classList.remove("game__cell--snake");
   snake.position.shift();
 
   var head = snake.position[snake.position.length - 1];
@@ -139,7 +143,7 @@ function hitFood() {
   var head = snake.position[snake.position.length - 1];
   var tail = snake.position[0];
   if (head.toString() === foodPos.toString()) {
-    boxes[random].classList.remove("food");
+    boxes[random].classList.remove("game__cell--food");
     snake.position.unshift(tail);
     randomFood();
     snake.food++;
@@ -159,12 +163,12 @@ function randomFood() {
   var randomY = Math.floor(Math.random() * table.rowsCols);
   random = randomX + randomY * table.rowsCols;
 
-  while (boxes[random].classList.contains("snake")) {
+  while (boxes[random].classList.contains("game__cell--snake")) {
     randomX = Math.floor(Math.random() * table.rowsCols);
     randomY = Math.floor(Math.random() * table.rowsCols);
     random = randomX + randomY * table.rowsCols;
   }
-  boxes[random].classList.add("food");
+  boxes[random].classList.add("game__cell--food");
   foodPos = [randomX, randomY];
 }
 
@@ -172,7 +176,7 @@ function renderSnake() {
   for (var i = 0; i < snake.position.length; i++) {
     boxes[
       snake.position[i][0] + snake.position[i][1] * table.rowsCols
-    ].classList.add("snake");
+    ].classList.add("game__cell--snake");
   }
 }
 
@@ -208,15 +212,15 @@ function tableCreation() {
   if (snakeTable.innerHTML === "") {
     for (var i = 0; i < table.boxes; i++) {
       var divElt = document.createElement("div");
-      divElt.classList.add("box");
+      divElt.classList.add("game__cell");
       snakeTable.appendChild(divElt);
     }
 
     var statusElt = document.createElement("div");
-    statusElt.classList.add("status");
+    statusElt.classList.add("game__status");
     snakeTable.appendChild(statusElt);
     scoreElt = document.createElement("span");
-    scoreElt.classList.add("score");
+    scoreElt.classList.add("game__score");
     scoreElt.innerHTML = snake.score + " ";
     statusElt.appendChild(scoreElt);
   }
@@ -340,4 +344,19 @@ function enableScroll() {
     passive: false,
   });
 }
+
+function saveGameHistory(durationMs, score) {
+  try {
+    var history = JSON.parse(localStorage.getItem("snakeHistory") || "[]");
+    history.push({
+      playedAt: new Date().toISOString(),
+      durationMs: durationMs,
+      score: score,
+    });
+    localStorage.setItem("snakeHistory", JSON.stringify(history));
+  } catch (e) {
+    console.error("Failed to save game history", e);
+  }
+}
+
 disableScroll();

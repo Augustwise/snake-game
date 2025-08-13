@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SNAKE — History</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="page--history">
+    <header class="page-header">SNAKE — History</header>
+
+    <div class="history__actions">
+      <a class="btn btn--accent" href="./index.html">Back to Game</a>
+      <button
+        class="btn btn--danger"
+        id="clearHistory"
+        title="Delete all stored games"
+      >
+        Clear
+      </button>
+    </div>
+
+    <section class="history">
+      <div id="empty" class="history__empty">No games played yet.</div>
+      <table id="historyTable" class="history__table hidden">
+        <thead class="history__head">
+          <tr>
+            <th>Started</th>
+            <th>Time</th>
+            <th>XP</th>
+          </tr>
+        </thead>
+        <tbody id="history-body" class="history__body"></tbody>
+      </table>
+    </section>
+
+    <script>
+      function formatDuration(ms) {
+        if (!ms || ms < 0) return "0s";
+        var totalSeconds = Math.floor(ms / 1000);
+        var hours = Math.floor(totalSeconds / 3600);
+        var minutes = Math.floor((totalSeconds % 3600) / 60);
+        var seconds = totalSeconds % 60;
+        if (hours > 0) {
+          return (
+            String(hours) +
+            ":" +
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(seconds).padStart(2, "0")
+          );
+        }
+        return (
+          String(minutes).padStart(1, "0") +
+          ":" +
+          String(seconds).padStart(2, "0")
+        );
+      }
+
+      function formatTimeOfDay(dateLike) {
+        var d = new Date(dateLike);
+        if (isNaN(d.getTime())) return "";
+        var h = String(d.getHours()).padStart(2, "0");
+        var m = String(d.getMinutes()).padStart(2, "0");
+        var s = String(d.getSeconds()).padStart(2, "0");
+        return h + ":" + m + ":" + s;
+      }
+
+      function renderHistory() {
+        var data;
+        try {
+          data = JSON.parse(localStorage.getItem("snakeHistory") || "[]");
+        } catch (e) {
+          data = [];
+        }
+        var empty = document.getElementById("empty");
+        var table = document.getElementById("historyTable");
+        var tbody = document.getElementById("history-body");
+        tbody.innerHTML = "";
+
+        if (!data || data.length === 0) {
+          empty.classList.remove("hidden");
+          table.classList.add("hidden");
+          return;
+        }
+
+        data.sort(function (a, b) {
+          return (
+            new Date(b.playedAt).getTime() - new Date(a.playedAt).getTime()
+          );
+        });
+
+        empty.classList.add("hidden");
+        table.classList.remove("hidden");
+
+        for (var i = 0; i < data.length; i++) {
+          var entry = data[i];
+          var tr = document.createElement("tr");
+
+          var tdStart = document.createElement("td");
+          tdStart.textContent = formatTimeOfDay(entry.playedAt);
+          tr.appendChild(tdStart);
+
+          var tdTime = document.createElement("td");
+          tdTime.textContent = formatDuration(entry.durationMs);
+          tr.appendChild(tdTime);
+
+          var tdScore = document.createElement("td");
+          tdScore.textContent = String(entry.score) + " XP";
+          tr.appendChild(tdScore);
+
+          tbody.appendChild(tr);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        renderHistory();
+        var clearBtn = document.getElementById("clearHistory");
+        clearBtn.addEventListener("click", function () {
+          localStorage.removeItem("snakeHistory");
+          renderHistory();
+        });
+      });
+    </script>
+  </body>
+</html>
