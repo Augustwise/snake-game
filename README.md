@@ -18,10 +18,14 @@ A classic Snake game implementation built with vanilla HTML, CSS, and JavaScript
 
 ## Features
 
-- Works on both desktop and mobile devices
-- Touch (swipe) Support for Mobile
-- Progressive Difficulty: Game speed increases with score
-- Real-time score display and final score on game over
+- [x] Works on both desktop and mobile devices
+- [x] Touch (swipe) Support for Mobile
+- [x] Progressive Difficulty: Game speed increases with score
+- [x] Real-time score display and final score on game over
+- [x] **Game History**: Track your past games with detailed statistics
+  - [x] View all previously played games sorted by date
+  - [x] See game duration, score (XP), and when each game was played
+  - [x] Clear history option to reset your records
 
 ## 🎨 Customization
 
