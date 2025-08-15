@@ -48,7 +48,7 @@ snake.init();
 start.addEventListener("click", startSnake);
 
 document.addEventListener("keydown", function (e) {
-  if (e.keyCode === 13 && snake.time === 0) {
+  if (e.key === "Enter" && snake.time === 0) {
     startSnake();
   }
 });
@@ -182,22 +182,30 @@ function renderSnake() {
 
 function turn(e) {
   if (snake.canTurn) {
-    switch (e.keyCode) {
-      case 13:
+    switch (e.key) {
+      case "Enter":
         break;
-      case 37:
+      case "ArrowLeft":
+      case "a":
+      case "A":
         if (snake.direction === "right") return;
         snake.direction = "left";
         break;
-      case 38:
+      case "ArrowUp":
+      case "w":
+      case "W":
         if (snake.direction === "down") return;
         snake.direction = "up";
         break;
-      case 39:
+      case "ArrowRight":
+      case "d":
+      case "D":
         if (snake.direction === "left") return;
         snake.direction = "right";
         break;
-      case 40:
+      case "ArrowDown":
+      case "s":
+      case "S":
         if (snake.direction === "up") return;
         snake.direction = "down";
         break;

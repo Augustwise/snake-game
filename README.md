@@ -6,7 +6,7 @@ A classic Snake game implementation built with vanilla HTML, CSS, and JavaScript
 
 1. Open `index.html` in your web browser
 2. Click the `Play` button or press `Enter` to start
-3. Use arrow keys (`↑`, `↓`, `←`, `→`) on desktop or swipe on mobile to control the snake
+3. Use arrow keys (`↑`, `↓`, `←`, `→`) or WASD keys (`W`, `A`, `S`, `D`) on desktop or swipe on mobile to control the snake
 
 ## Game Rules
 
