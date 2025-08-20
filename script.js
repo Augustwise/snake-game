@@ -1,15 +1,15 @@
-var snakeTable = document.querySelector(".game__grid");
-var boxes = document.getElementsByClassName("game__cell");
-var modul = document.querySelector(".modal");
-var start = document.querySelector(".modal__start");
-var gameStartTime = 0;
+let snakeTable = document.querySelector(".game__grid");
+let boxes = document.getElementsByClassName("game__cell");
+let modul = document.querySelector(".modal");
+let start = document.querySelector(".modal__start");
+let gameStartTime = 0;
 
-var table = {
+let table = {
   rowsCols: 21,
   boxes: 21 * 21,
 };
 
-var snake = {
+let snake = {
   direction: "right",
   position: [
     [6, 10],
@@ -96,7 +96,7 @@ function updatePositions() {
   ].classList.remove("game__cell--snake");
   snake.position.shift();
 
-  var head = snake.position[snake.position.length - 1];
+  let head = snake.position[snake.position.length - 1];
   switch (snake.direction) {
     case "left":
       snake.position.push([head[0] - 1, head[1]]);
@@ -116,7 +116,7 @@ function updatePositions() {
 }
 
 function hitBorder() {
-  var headPos = snake.position.length - 1;
+  let headPos = snake.position.length - 1;
 
   if (
     (snake.position[headPos][0] === table.rowsCols - 1 &&
@@ -131,8 +131,8 @@ function hitBorder() {
 }
 
 function hitSnake() {
-  var headPos = snake.position.length - 1;
-  for (var i = 0; i < headPos; i++) {
+  let headPos = snake.position.length - 1;
+  for (let i = 0; i < headPos; i++) {
     if (snake.position[headPos].toString() === snake.position[i].toString()) {
       stopp();
     }
@@ -140,8 +140,8 @@ function hitSnake() {
 }
 
 function hitFood() {
-  var head = snake.position[snake.position.length - 1];
-  var tail = snake.position[0];
+  let head = snake.position[snake.position.length - 1];
+  let tail = snake.position[0];
   if (head.toString() === foodPos.toString()) {
     boxes[random].classList.remove("game__cell--food");
     snake.position.unshift(tail);
@@ -159,8 +159,8 @@ function hitFood() {
 }
 
 function randomFood() {
-  var randomX = Math.floor(Math.random() * table.rowsCols);
-  var randomY = Math.floor(Math.random() * table.rowsCols);
+  let randomX = Math.floor(Math.random() * table.rowsCols);
+  let randomY = Math.floor(Math.random() * table.rowsCols);
   random = randomX + randomY * table.rowsCols;
 
   while (boxes[random].classList.contains("game__cell--snake")) {
@@ -173,7 +173,7 @@ function randomFood() {
 }
 
 function renderSnake() {
-  for (var i = 0; i < snake.position.length; i++) {
+  for (let i = 0; i < snake.position.length; i++) {
     boxes[
       snake.position[i][0] + snake.position[i][1] * table.rowsCols
     ].classList.add("game__cell--snake");
@@ -218,13 +218,13 @@ function turn(e) {
 
 function tableCreation() {
   if (snakeTable.innerHTML === "") {
-    for (var i = 0; i < table.boxes; i++) {
-      var divElt = document.createElement("div");
+    for (let i = 0; i < table.boxes; i++) {
+      let divElt = document.createElement("div");
       divElt.classList.add("game__cell");
       snakeTable.appendChild(divElt);
     }
 
-    var statusElt = document.createElement("div");
+    let statusElt = document.createElement("div");
     statusElt.classList.add("game__status");
     snakeTable.appendChild(statusElt);
     scoreElt = document.createElement("span");
@@ -257,13 +257,13 @@ $("document").ready(function () {
 
 (function ($) {
   $.fn.swipeDetector = function (options) {
-    var swipeState = 0;
+    let swipeState = 0;
 
-    var startX = 0;
-    var startY = 0;
+    let startX = 0;
+    let startY = 0;
 
-    var pixelOffsetX = 0;
-    var pixelOffsetY = 0;
+    let pixelOffsetX = 0;
+    let pixelOffsetY = 0;
 
     var swipeTarget = this;
     var defaultSettings = {
@@ -322,8 +322,8 @@ $("document").ready(function () {
         event = event.originalEvent.touches[0];
       }
 
-      var swipeOffsetX = event.clientX - startX;
-      var swipeOffsetY = event.clientY - startY;
+      let swipeOffsetX = event.clientX - startX;
+      let swipeOffsetY = event.clientY - startY;
 
       if (
         Math.abs(swipeOffsetX) > options.swipeThreshold ||
@@ -355,7 +355,7 @@ function enableScroll() {
 
 function saveGameHistory(durationMs, score) {
   try {
-    var history = JSON.parse(localStorage.getItem("snakeHistory") || "[]");
+    let history = JSON.parse(localStorage.getItem("snakeHistory") || "[]");
     history.push({
       playedAt: new Date().toISOString(),
       durationMs: durationMs,

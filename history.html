@@ -4,9 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SNAKE — History</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body class="page--history">
@@ -24,12 +27,12 @@
     </div>
 
     <section class="history">
-      <div id="empty" class="history__empty">No games played yet.</div>
+      <div id="empty" class="history__empty">Not played yet</div>
       <table id="historyTable" class="history__table hidden">
         <thead class="history__head">
           <tr>
-            <th>Started</th>
-            <th>Time</th>
+            <th>Date and time</th>
+            <th>Duration</th>
             <th>XP</th>
           </tr>
         </thead>
@@ -40,10 +43,10 @@
     <script>
       function formatDuration(ms) {
         if (!ms || ms < 0) return "0s";
-        var totalSeconds = Math.floor(ms / 1000);
-        var hours = Math.floor(totalSeconds / 3600);
-        var minutes = Math.floor((totalSeconds % 3600) / 60);
-        var seconds = totalSeconds % 60;
+        let totalSeconds = Math.floor(ms / 1000);
+        let hours = Math.floor(totalSeconds / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
+        let seconds = totalSeconds % 60;
         if (hours > 0) {
           return (
             String(hours) +
@@ -61,24 +64,30 @@
       }
 
       function formatTimeOfDay(dateLike) {
-        var d = new Date(dateLike);
+        let d = new Date(dateLike);
         if (isNaN(d.getTime())) return "";
-        var h = String(d.getHours()).padStart(2, "0");
-        var m = String(d.getMinutes()).padStart(2, "0");
-        var s = String(d.getSeconds()).padStart(2, "0");
-        return h + ":" + m + ":" + s;
+
+        let day = String(d.getDate()).padStart(2, "0");
+        let month = String(d.getMonth() + 1).padStart(2, "0");
+        let year = d.getFullYear();
+
+        let h = String(d.getHours()).padStart(2, "0");
+        let m = String(d.getMinutes()).padStart(2, "0");
+        let s = String(d.getSeconds()).padStart(2, "0");
+
+        return day + "." + month + "." + year + " " + h + ":" + m + ":" + s;
       }
 
       function renderHistory() {
-        var data;
+        let data;
         try {
           data = JSON.parse(localStorage.getItem("snakeHistory") || "[]");
         } catch (e) {
           data = [];
         }
-        var empty = document.getElementById("empty");
-        var table = document.getElementById("historyTable");
-        var tbody = document.getElementById("history-body");
+        let empty = document.getElementById("empty");
+        let table = document.getElementById("historyTable");
+        let tbody = document.getElementById("history-body");
         tbody.innerHTML = "";
 
         if (!data || data.length === 0) {
@@ -96,19 +105,19 @@
         empty.classList.add("hidden");
         table.classList.remove("hidden");
 
-        for (var i = 0; i < data.length; i++) {
-          var entry = data[i];
-          var tr = document.createElement("tr");
+        for (let i = 0; i < data.length; i++) {
+          let entry = data[i];
+          let tr = document.createElement("tr");
 
-          var tdStart = document.createElement("td");
+          let tdStart = document.createElement("td");
           tdStart.textContent = formatTimeOfDay(entry.playedAt);
           tr.appendChild(tdStart);
 
-          var tdTime = document.createElement("td");
+          let tdTime = document.createElement("td");
           tdTime.textContent = formatDuration(entry.durationMs);
           tr.appendChild(tdTime);
 
-          var tdScore = document.createElement("td");
+          let tdScore = document.createElement("td");
           tdScore.textContent = String(entry.score) + " XP";
           tr.appendChild(tdScore);
 
@@ -118,7 +127,7 @@
 
       document.addEventListener("DOMContentLoaded", function () {
         renderHistory();
-        var clearBtn = document.getElementById("clearHistory");
+        let clearBtn = document.getElementById("clearHistory");
         clearBtn.addEventListener("click", function () {
           localStorage.removeItem("snakeHistory");
           renderHistory();
