@@ -54,7 +54,18 @@ document.addEventListener("keydown", function (e) {
 });
 
 function startSnake() {
-  modul.classList.add("hidden");
+  if (!modul.classList.contains("hidden")) {
+    modul.classList.add("modal--closing");
+
+    const onFadeOutEnd = (e) => {
+      if (e.target !== modul || e.propertyName !== "opacity") return;
+      modul.removeEventListener("transitionend", onFadeOutEnd);
+      modul.classList.add("hidden");
+      modul.classList.remove("modal--closing");
+    };
+
+    modul.addEventListener("transitionend", onFadeOutEnd);
+  }
 
   snake.time = 1;
   renderSnake();
@@ -71,12 +82,24 @@ function stopp() {
   snake.final = snake.score;
   var durationMs = Date.now() - gameStartTime;
   saveGameHistory(durationMs, snake.final);
+
   start.querySelector("span").innerHTML = snake.final + "  ";
   setTimeout(function () {
     start.querySelector("span").innerHTML = " Play ";
   }, 1500);
+
   snake.init();
+
+  modul.classList.remove("modal--closing");
+
   modul.classList.remove("hidden");
+  modul.classList.add("modal--opening");
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      modul.classList.remove("modal--opening");
+    });
+  });
 }
 
 function move() {

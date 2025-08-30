@@ -166,12 +166,34 @@ body {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
   text-align: center;
+  opacity: 1;
+  transition: opacity var(--btn-transition) ease;
+  will-change: opacity;
+}
+
+.modal--opening {
+  opacity: 0;
+}
+.modal--opening .modal__panel {
+  transform: scale(0.96);
+  opacity: 0;
 }
 .modal__panel {
   background: var(--color-panel);
   padding: 60px;
   box-shadow: var(--shadow-2);
   border-radius: var(--radius-1);
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity var(--btn-transition) ease, transform var(--btn-transition) ease;
+}
+
+.modal--closing {
+  opacity: 0;
+}
+.modal--closing .modal__panel {
+  transform: scale(0.96);
+  opacity: 0;
 }
 
 .history {
